@@ -19,6 +19,21 @@ let lastCaughtItem = null;
 let bonusCookieSpawned = false;
 let sparklePulse = 0;
 
+// Star field
+let stars = [];
+
+function generateStars(count) {
+  stars = [];
+  for (let i = 0; i < count; i++) {
+    stars.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 1.5 + 0.5,
+      pulse: Math.random() * 100
+    });
+  }
+}
+
 // Resize canvas to match wrapper
 function resizeCanvas() {
   const maxWidth = 400;
@@ -34,8 +49,26 @@ function resizeCanvas() {
   canvas.height = height;
 
   twinsi.y = canvas.height - 80;
+  generateStars(50); // regenerate stars on resize
 }
 
+// Draw Game Background
+function drawBackground() {
+  const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+  gradient.addColorStop(0, '#2c2c4a');
+  gradient.addColorStop(0.5, '#4a4a6a');
+  gradient.addColorStop(1, '#3a3a5a');
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  for (let star of stars) {
+    const alpha = 0.1 + Math.sin((star.pulse + sparklePulse) / 20) * 0.1;
+    ctx.fillStyle = `rgba(255,255,255,${alpha})`;
+    ctx.beginPath();
+    ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
 
 // Draw Twinsi Bear
 function drawTwinsi() {
@@ -44,7 +77,7 @@ function drawTwinsi() {
 
 // Draw falling items
 function drawItems() {
-  ctx.font = '28px Arial';
+  ctx.font = '28px "Segoe UI Emoji", "Apple Color Emoji", sans-serif';
   ctx.textAlign = 'left';
 
   items.forEach(item => {
@@ -57,6 +90,7 @@ function drawItems() {
       ctx.save();
       ctx.shadowColor = `rgba(255, 255, 150, ${pulseAlpha})`;
       ctx.shadowBlur = pulseBlur;
+      ctx.fillStyle = '#fff';
       ctx.fillText(emoji, item.x, item.y);
       ctx.restore();
 
@@ -66,7 +100,15 @@ function drawItems() {
       ctx.strokeText(emoji, item.x, item.y);
       ctx.restore();
     } else {
+      ctx.save();
+      ctx.fillStyle = '#fff';
+      ctx.shadowColor = 'rgba(255, 255, 255, 0.3)';
+      ctx.shadowBlur = 4;
       ctx.fillText(emoji, item.x, item.y);
+      ctx.strokeStyle = 'rgba(0, 0, 0, 0.3)';
+      ctx.lineWidth = 1;
+      ctx.strokeText(emoji, item.x, item.y);
+      ctx.restore();
     }
   });
 
@@ -124,7 +166,7 @@ function spawnItem() {
 // Draw score and timer
 function drawHUD() {
   const width = canvas.width;
-  ctx.fillStyle = 'black';
+  ctx.fillStyle = '#fff';
   ctx.font = '25px Iceberg';
   ctx.textAlign = 'left';
   ctx.fillText(`Score: ${score}`, 10, 30);
@@ -138,6 +180,8 @@ function gameLoop() {
   const height = canvas.height;
 
   ctx.clearRect(0, 0, width, height);
+  drawBackground();
+
   drawTwinsi();
   drawItems();
   updateItems();
@@ -153,10 +197,11 @@ function gameLoop() {
     clearInterval(countdownInterval);
 
     ctx.clearRect(0, 0, width, height);
+    drawBackground();
     drawTwinsi();
     drawHUD();
 
-    ctx.fillStyle = 'black';
+    ctx.fillStyle = '#fff';
     ctx.font = '30px Iceberg';
     ctx.textAlign = 'center';
     ctx.fillText(`Game Over! Score: ${score}`, width / 2, height / 2);
