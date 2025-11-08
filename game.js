@@ -72,7 +72,7 @@ function drawBackground() {
 
 // Draw Twinsi Bear
 function drawTwinsi() {
-  ctx.drawImage(twinsibearImg, twinsi.x - 20, twinsi.y, 100, 80);
+  ctx.drawImage(twinsibearImg, twinsi.x - 20, twinsi.y, 150, 80);
 }
 
 // Draw falling items
