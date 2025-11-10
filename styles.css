@@ -64,7 +64,7 @@ canvas {
   width: 100%;
   height: auto;
   display: block;
-  background: linear-gradient(to bottom, #fff8e1, #fce4ec);
+  background: transparent;
   border: 6px solid;
   border-image: linear-gradient(45deg, #ffd700, #fff8dc, #ffd700) 1;
   border-radius: 16px;
