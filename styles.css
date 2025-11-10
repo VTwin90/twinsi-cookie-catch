@@ -3,7 +3,6 @@ html, body {
   padding: 0;
   height: 100%;
   font-family: 'Iceberg', sans-serif;
-  overflow: hidden;
 }
 
 body {
@@ -11,7 +10,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  min-height: 100vh;
+  min-height: 101vh;
   background:
       repeating-linear-gradient(
         45deg,
@@ -63,8 +62,9 @@ body::after {
 canvas {
   width: 100%;
   height: auto;
+  max-height: 80vh;
   display: block;
-  background: transparent;
+  background: linear-gradient(to bottom, #fff8e1, #fce4ec);
   border: 6px solid;
   border-image: linear-gradient(45deg, #ffd700, #fff8dc, #ffd700) 1;
   border-radius: 16px;
