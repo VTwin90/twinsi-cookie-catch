@@ -10,7 +10,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  min-height: 102vh;
+  min-height: 100dvh;
   background:
       repeating-linear-gradient(
         45deg,
@@ -19,7 +19,6 @@ body {
         #b71c1c 80px,
         #b71c1c 160px
       );  
-  padding: 1rem;
   color: #fff;
   text-align: center;
   font-family: 'Iceberg', sans-serif;
